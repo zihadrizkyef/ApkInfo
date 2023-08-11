@@ -42,7 +42,9 @@ class MainActivity : ComponentActivity() {
         mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
         listApp.addAll(packageManager.getInstalledApplications(PackageManager.GET_META_DATA).map {
             Data(
-                packageManager.getApplicationIcon(it).toBitmap(), packageManager.getApplicationLabel(it).toString(), it.packageName
+                packageManager.getApplicationIcon(it).toBitmap(),
+                packageManager.getApplicationLabel(it).toString(),
+                it.packageName,
             )
         }.sortedBy { it.name })
         filteredApp.addAll(listApp)
@@ -70,27 +72,21 @@ class MainActivity : ComponentActivity() {
                                 keyboardOptions = KeyboardOptions.Default.copy(
                                     imeAction = ImeAction.Search
                                 ),
-                                keyboardActions = KeyboardActions(
-                                    onSearch = {
-                                        focusManager.clearFocus()
-                                    }
-                                ),
+                                keyboardActions = KeyboardActions(onSearch = {
+                                    focusManager.clearFocus()
+                                }),
                                 trailingIcon = {
                                     if (text.isNotEmpty()) {
-                                        IconButton(
-                                            onClick = {
-                                                text = ""
-                                                filteredApp.clear()
-                                                filteredApp.addAll(listApp.filter {
-                                                    it.name.contains(text, true) || it.packageName.contains(text, true)
-                                                })
-                                                focusManager.clearFocus()
-                                            }
-                                        ) {
+                                        IconButton(onClick = {
+                                            text = ""
+                                            filteredApp.clear()
+                                            filteredApp.addAll(listApp.filter {
+                                                it.name.contains(text, true) || it.packageName.contains(text, true)
+                                            })
+                                            focusManager.clearFocus()
+                                        }) {
                                             Icon(
-                                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear),
-                                                contentDescription = "Clear",
-                                                tint = Color.Gray
+                                                imageVector = ImageVector.vectorResource(id = R.drawable.ic_clear), contentDescription = "Clear", tint = Color.Gray
                                             )
                                         }
                                     }
